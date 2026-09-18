@@ -1,0 +1,12 @@
+{
+  "service": "icu-proxy",
+  "context": {
+    "care_area": "ICU",
+    "contact_channels": [
+      "phone",
+      "sms",
+      "secure-link"
+    ],
+    "clinical_decision_engine": false
+  }
+}
