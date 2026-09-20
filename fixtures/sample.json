@@ -7,6 +7,36 @@
       "sms",
       "secure-link"
     ],
-    "clinical_decision_engine": false
+    "clinical_decision_engine": false,
+    "matter_types": [
+      "critical_notice",
+      "exam_consent",
+      "transfer_decision"
+    ],
+    "grant_basis": [
+      "patient_designated",
+      "legal",
+      "hospital_verified"
+    ],
+    "rank_order": {
+      "patient_designated": "first_band",
+      "legal": [
+        "guardian",
+        "spouse",
+        "adult_child",
+        "parent",
+        "sibling"
+      ]
+    },
+    "proxy_termination_reasons": [
+      "transferred",
+      "regained_capacity",
+      "proxy_revoked",
+      "discharged",
+      "contact_revoked"
+    ],
+    "audit": "hash_chain_sha256",
+    "documents": "immutable_versions",
+    "privacy": "family_view_masks_other_contacts"
   }
 }
