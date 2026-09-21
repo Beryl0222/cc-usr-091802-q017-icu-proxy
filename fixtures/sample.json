@@ -8,5 +8,54 @@
       "secure-link"
     ],
     "clinical_decision_engine": false
-  }
+  },
+  "boundaries": {
+    "clinical_decisions": "由有资质医护作出，系统只记录与留痕",
+    "disclosure": "按事项范围白名单做最小披露",
+    "audit": "哈希链追加日志，仅追加不可改写",
+    "family_privacy": "普通家属视图不返回其他联系人资料"
+  },
+  "workflow": [
+    {
+      "id": "authority",
+      "name": "代理资格与顺位",
+      "bases": ["designated", "legal", "verified"],
+      "rule": "院方核验为生效闸门；法定关系优先于预先指定；同源按顺位；受有效期约束",
+      "termination_events": ["transfer", "regained", "revoked", "discharged"],
+      "audit_events": ["agent.registered", "authority.terminated"]
+    },
+    {
+      "id": "notification",
+      "name": "通知与逐级升级",
+      "results": ["delivered", "rejected", "unreachable"],
+      "rule": "前位拒收或失联才升级；已送达未决定不得越级；同业务日同事项幂等",
+      "audit_events": ["matter.opened", "notification.issued", "contact.attempted", "matter.exhausted"]
+    },
+    {
+      "id": "confirmation",
+      "name": "远程确认",
+      "rule": "确认绑定文书摘要与不可变版本、身份校验与签署时间；文书更新后旧确认自动失效并以新版本重新通知",
+      "audit_events": ["document.versioned", "confirmation.submitted", "stance.refused"]
+    },
+    {
+      "id": "review",
+      "name": "冲突复核",
+      "routes": ["ethics", "medical_affairs"],
+      "rule": "意见相反转伦理或医务复核，复核期间暂停受理决定",
+      "audit_events": ["matter.conflict", "review.opened", "review.decided"]
+    },
+    {
+      "id": "emergency",
+      "name": "抢救例外",
+      "rule": "由有抢救权限的医护说明紧迫性并先行处置，事后补齐依据；系统不产生医疗结论",
+      "audit_events": ["exception.opened", "exception.substantiated"]
+    },
+    {
+      "id": "dossier",
+      "name": "复盘与隐私",
+      "views": ["audit", "family"],
+      "rule": "审查视图还原资格、披露、尝试、决定版本与例外理由；家属视图仅见本人相关记录",
+      "audit_events": ["dossier.viewed"]
+    }
+  ]
 }
